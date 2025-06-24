@@ -13,9 +13,9 @@ public class Main {
         System.out.println();
 
         // Generate the sine waves
-        double[] wave = sineWave.generate(amplitude, timeBase, numSamples, frequencyHz);
-        WavePair waves = sineWave.reboundDelay(wave, timeBase, timeDelay);
-        double [] result = sineWave.addWaves(waves.originalWave, waves.delayedWave);
+        double[] wave = Wave.generate(amplitude, timeBase, numSamples, frequencyHz);
+        WavePair waves = WavePair.reboundDelay(wave, timeBase, timeDelay);
+        double [] result = waves.addWaves(waves.originalWave, waves.delayedWave);
 
 
         // Print the original sine wave values & write to csv
@@ -24,7 +24,7 @@ public class Main {
         //    System.out.printf("Sample %d: %.6f%n", i, waves.originalWave[i]);
         //}
         String csvFileName = "original-sine.csv";
-        sineWave.writeToCSV(waves.originalWave, timeBase, csvFileName);
+        Wave.writeToCSV(waves.originalWave, timeBase, csvFileName);
 
         // Print the delayed sine wave values & write to csv
         //System.out.println("Delayed Sine Wave Samples:");
@@ -32,14 +32,14 @@ public class Main {
         //    System.out.printf("Sample %d: %.6f%n", i, waves.delayedWave[i]);
         //}
         String delayedCSV = "artificial-delayed-sine.csv";
-        sineWave.writeToCSV(waves.delayedWave, timeBase, delayedCSV);
+        Wave.writeToCSV(waves.delayedWave, timeBase, delayedCSV);
 
         // Write added waves to csv
         String addedSCV = "addedWaves.csv";
-        sineWave.writeToCSV(result, timeBase, addedSCV);
+        Wave.writeToCSV(result, timeBase, addedSCV);
 
 
-        int sineWavePos = sineWave.sendDelayPos(result, wave);
+        int sineWavePos = waves.sendDelayPos(result, wave);
         int totalDelay = sineWavePos + numSamples;
 
         double[] receivedData = result.clone();
@@ -62,7 +62,7 @@ public class Main {
         //}
 
         String integrated = "to-parse_data-output.csv";
-        sineWave.writeToCSV(integrateData, timeBase, integrated);
+        Wave.writeToCSV(integrateData, timeBase, integrated);
 
     }
 }
